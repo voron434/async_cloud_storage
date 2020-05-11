@@ -7,7 +7,6 @@ import aiofiles
 
 from aiohttp import web
 
-
 CHUNK_SIZE = 10**6  # ~100KB per iteration
 
 logger = logging.getLogger("app")
@@ -25,8 +24,8 @@ async def archivate(request):
     await response.prepare(request)
 
     zip_command = f"zip -r - {archive_hash}"
-    zip_process = await asyncio.create_subprocess_shell(
-        zip_command,
+    zip_process = await asyncio.create_subprocess_exec(
+        *zip_command.split(" "),
         cwd=request.app.source_path,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE)
